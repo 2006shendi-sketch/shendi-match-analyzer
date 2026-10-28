@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>SHENDi Match Analyzer</title>
+<style>
+:root{color-scheme:dark;--bg:#090b0e;--panel:#14181e;--line:#29313b;--text:#f5f7fa;--muted:#aab4c0;--accent:#d7ff35}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0,#1e2932 0,transparent 35%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.65}
+.wrap{width:min(920px,100%);margin:auto;padding:22px 16px 48px}.brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.logo{width:48px;height:48px;border:2px solid var(--accent);border-radius:14px;display:grid;place-items:center;font-weight:900;font-size:27px;color:var(--accent)}h1{font-size:23px;line-height:1.25;margin:0} .sub{color:var(--muted);font-size:13px;margin-top:4px}
+.hero{padding:22px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(140deg,#171d24,#101317);margin-bottom:16px}.tag{display:inline-block;color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.5px}.hero h2{font-size:25px;margin:8px 0}.hero p{color:var(--muted);margin:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin:14px 0}.panel h3{font-size:17px;margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:13px;color:var(--muted)}input[type=text],input[type=number],select{width:100%;padding:12px;border-radius:11px;border:1px solid var(--line);background:#0c0f13;color:var(--text);font-size:15px;min-width:0}
+.upload{display:block;border:1px dashed #586371;border-radius:14px;padding:18px;text-align:center;cursor:pointer;background:#0c0f13}.upload input{display:none}.upload strong{display:block}.upload small{color:var(--muted)}#preview{display:none;max-width:100%;max-height:300px;object-fit:contain;border-radius:12px;margin:14px auto 0}
+.btn{border:0;border-radius:12px;padding:13px 18px;background:var(--accent);color:#111;font-weight:900;font-size:16px;width:100%;cursor:pointer;margin-top:14px}.btn:active{transform:scale(.99)}
+.note{font-size:12px;color:var(--muted);margin-top:9px}.results{display:none}.score{display:flex;justify-content:center;align-items:center;gap:18px;padding:20px 8px;background:#0c0f13;border-radius:14px;margin-bottom:14px}.score .num{font-size:32px;font-weight:900;color:var(--accent)}.score .team{font-size:13px;max-width:38%;text-align:center;overflow-wrap:anywhere}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;border-radius:12px;border:1px solid var(--line);background:#101419}.stat span{display:block;color:var(--muted);font-size:12px}.stat strong{display:block;font-size:17px;margin-top:4px}.warn{font-size:12px;color:#e8d7a0;border-right:3px solid #d6b34b;padding-right:10px;margin-top:14px}.footer{text-align:center;color:#77818d;font-size:12px;margin-top:24px}
+@media(max-width:520px){.wrap{padding:16px 12px 34px}.hero{padding:18px}.hero h2{font-size:22px}.grid{grid-template-columns:1fr 1fr;gap:9px}.panel{padding:14px}.score{gap:10px}.score .num{font-size:27px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="brand"><div class="logo">S</div><div><h1>SHENDi Match Analyzer</h1><div class="sub">محلّل مباريات كرة القدم — نسخة تجريبية شخصية</div></div></header>
+<section class="hero"><span class="tag">MATCH CENTER / SHENDi</span><h2>حلّل المباراة قبل صافرة البداية ⚽</h2><p>أضف صورة المباراة، واكتب أسماء الفريقين وبعض المعلومات المتوفرة حتى تحصل على ملخص أولي مرتب.</p></section>
+<section class="panel">
+<h3>١. صورة المباراة</h3>
+<label class="upload" for="matchImage"><strong>📷 اضغط لاختيار صورة من جهازك</strong><small>اختار لقطة شاشة بيها الفريقين أو معلومات المباراة</small><input id="matchImage" type="file" accept="image/*"><img id="preview" alt="معاينة صورة المباراة"></label>
+<p class="note">ملاحظة: الصورة هنا للمعاينة فقط؛ النسخة الحالية ما تقرأ أسماء الفرق أو الإحصائيات تلقائياً.</p>
+</section>
+<form id="analysisForm">
+<section class="panel"><h3>٢. معلومات الفريقين</h3><div class="grid">
+<div class="field"><label for="home">الفريق الأول / صاحب الأرض</label><input id="home" type="text" placeholder="مثلاً: ريال مدريد" required></div>
+<div class="field"><label for="away">الفريق الثاني / الضيف</label><input id="away" type="text" placeholder="مثلاً: برشلونة" required></div>
+<div class="field"><label for="hgf">أهداف الأول بآخر 5 مباريات</label><input id="hgf" type="number" min="0" max="50" placeholder="إذا تعرف المجموع"></div>
+<div class="field"><label for="agf">أهداف الثاني بآخر 5 مباريات</label><input id="agf" type="number" min="0" max="50" placeholder="إذا تعرف المجموع"></div>
+<div class="field"><label for="hga">أهداف استقبلها الأول بآخر 5</label><input id="hga" type="number" min="0" max="50" placeholder="اختياري"></div>
+<div class="field"><label for="aga">أهداف استقبلها الثاني بآخر 5</label><input id="aga" type="number" min="0" max="50" placeholder="اختياري"></div>
+</div><p class="note">إذا ما عندك أرقام، اترك الخانات فارغة. لا تدخل توقعات على أنها إحصائيات حقيقية.</p><button class="btn" type="submit">حلّل المباراة</button></section>
+</form>
+<section id="results" class="panel results" aria-live="polite"><h3>نتيجة التحليل الأولي</h3><div class="score"><div class="team" id="rhome"></div><div class="num" id="rscore">1 - 1</div><div class="team" id="raway"></div></div><div class="cards">
+<div class="stat"><span>الأهداف المتوقعة مبدئياً</span><strong id="goals">أقل من 3.5</strong></div>
+<div class="stat"><span>تسجيل الفريقين</span><strong id="btts">غير محسوم</strong></div>
+<div class="stat"><span>الشوط الأول</span><strong>توقع منخفض الثقة</strong></div>
+<div class="stat"><span>الركنيات والبطاقات</span><strong>بيانات غير كافية</strong></div>
+</div><p class="warn">هذا تقدير حسابي مبسّط من الأرقام التي أدخلتها، وليس تحليلاً مباشراً أو بيانات لحظية. لا توجد نتيجة مضمونة، ولا تعتمد عليه وحده للمراهنة.</p></section>
+<div class="footer">SHENDi · «كل سالفة إلها وجه ثاني.»</div>
+</main>
+<script>
+const picker=document.getElementById('matchImage'),preview=document.getElementById('preview');
+picker.addEventListener('change',()=>{const f=picker.files&&picker.files[0];if(!f)return;if(!f.type.startsWith('image/'))return;preview.src=URL.createObjectURL(f);preview.style.display='block';});
+document.getElementById('analysisForm').addEventListener('submit',e=>{
+e.preventDefault();
+const home=document.getElementById('home').value.trim(),away=document.getElementById('away').value.trim();
+const vals=['hgf','agf','hga','aga'].map(id=>{const v=document.getElementById(id).value;return v===''?null:Number(v)});
+let [hgf,agf,hga,aga]=vals;
+const has=hgf!==null&&agf!==null;
+let hs=1,as=1;
+if(has){const hAttack=hgf/5,aAttack=agf/5,hDef=hga===null?1.1:hga/5,aDef=aga===null?1.1:aga/5;hs=Math.max(0,Math.min(4,Math.round((hAttack+aDef)/2)));as=Math.max(0,Math.min(4,Math.round((aAttack+hDef)/2)));}
+document.getElementById('rhome').textContent=home;document.getElementById('raway').textContent=away;document.getElementById('rscore').textContent=hs+' - '+as;
+const total=hs+as;document.getElementById('goals').textContent=total<=2?'أقل من 2.5 (تقديري)':total===3?'أقل من/أكثر من 3.5 غير محسوم':'أكثر من 2.5 (تقديري)';
+document.getElementById('btts').textContent=hs>0&&as>0?'يميل إلى نعم':hs===0||as===0?'يميل إلى لا':'غير محسوم';
+document.getElementById('results').style.display='block';document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+});
+</script>
+</body></html>
